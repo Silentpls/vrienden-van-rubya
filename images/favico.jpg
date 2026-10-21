@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <!-- v28080 -->
+
+
+  <title>MijnAccount, Mijndomein, Webhosting &amp; Webmail offline; PHP-kwetsbaarheden ( CVE-2026-109618 / CVE-2026-109619 ) &ndash; Mijndomein Helpdesk</title>
+
+  
+
+  <meta name="description" content="Jouw veiligheid gaat voor  Jouw veiligheid gaat voor. Daarom zijn onze websites en die van onze klanten tijdelijk offline.Er is een..." /><meta property="og:image" content="https://mijndomein.zendesk.com/hc/theming_assets/01M4G56ZQXBR6HC228KWCG2940" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Mijndomein Helpdesk" />
+<meta property="og:title" content="MijnAccount, Mijndomein, Webhosting &amp; Webmail offline; PHP-kwetsbaarheden ( CVE-2026-109618 / CVE-2026-109619 )" />
+<meta property="og:description" content="Jouw veiligheid gaat voor
+
+Jouw veiligheid gaat voor.
+Daarom zijn onze websites en die van onze klanten tijdelijk offline.Er is een ernstig beveiligingslek ontdekt in PHP, een technologie die werel..." />
+<meta property="og:url" content="https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619" />
+<link rel="canonical" href="https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">
+<link rel="alternate" hreflang="nl" href="https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">
+<link rel="alternate" hreflang="x-default" href="https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">
+
+  <link rel="stylesheet" href="//static.zdassets.com/hc/assets/application-b925b7498ff4356827db8a6064e91e2b.css" media="all" id="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/hc/theming_assets/301156/29521/style.css?digest=40011676757010">
+
+  <link rel="icon" type="image/x-icon" href="/hc/theming_assets/01M4G5702WGEH6EGEKMNBV114A">
+
+    
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#24103A">
+
+  <link rel="icon" href="/hc/theming_assets/01M4G5702WGEH6EGEKMNBV114A">
+
+<!--
+  Circular Std is the approved Mijndomein typeface. The scaffold references the family in CSS,
+  but licensed font binaries are intentionally not bundled here. Add the licensed webfont files
+  as Guide theme assets and declare @font-face in style.css before production launch.
+-->
+
+<!-- Safe, narrow integration configuration. No arbitrary HTML/JS is accepted from theme settings. -->
+
+  <meta name="md-google-tag-id" content="GTM-T3P74VX">
+  <script>
+    (function () {
+      var node = document.querySelector('meta[name="md-google-tag-id"]');
+      var id = node ? String(node.getAttribute('content') || '').trim() : '';
+      if (!/^(GTM-[A-Z0-9-]+|G-[A-Z0-9]+)$/i.test(id)) {
+        if (id) console.warn('[Mijndomein Helpdesk] Ignoring invalid Google tag ID.');
+        return;
+      }
+
+      if (/^GTM-/i.test(id)) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(id);
+        (document.head || document.documentElement).appendChild(script);
+        return;
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', id);
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+      (document.head || document.documentElement).appendChild(script);
+    }());
+  </script>
+
+
+<!-- Messaging availability configuration. The theme never stores Zendesk API credentials client-side. -->
+<meta name="md-messaging-enabled" content="false">
+<meta name="md-messaging-use-business-hours" content="false">
+<meta name="md-messaging-business-days" content="1,2,3,4,5">
+<meta name="md-messaging-business-windows" content="09:00-12:00,13:00-16:00">
+<meta name="md-messaging-business-timezone" content="Europe/Amsterdam">
+<meta name="md-messaging-availability-endpoint" content="">
+<meta name="md-messaging-offline-text" content="Domeintje helpt je direct. Is een medewerker nodig? Dan reageren we zo snel mogelijk en kun je het gesprek voortzetten wanneer het jou uitkomt.">
+
+  
+</head>
+<body class="">
+  
+  
+  
+
+  <a class="skip-navigation" href="#main-content">Overslaan en naar hoofdcontent gaan</a>
+
+  <div class="top-alert top-alert--critical" role="status">
+    <div class="container">
+      <span class="alert-dot" aria-hidden="true"></span>
+      <span>
+        <strong>We nemen preventieve beveiligingsmaatregelen</strong>
+         Hierdoor is onze mijndomein.nl en MijnAccount, webhosting en webmail tijdelijk niet beschikbaar. E-mailverkeer, Websitemaker en Webshop blijven werken.
+        
+          <a class="alert-link" href="https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-Beveiligingsupdate-MijnAccount-Mijndomein-Webhosting-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619" data-configured-url>Bekijk de status hier.</a>
+        
+      </span>
+    </div>
+  </div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand brand-logo-link" title="Start" href="/hc/nl">
+      
+        <img class="zd-logo" src="/hc/theming_assets/01M4G56ZQXBR6HC228KWCG2940" alt="Mijndomein">
+      
+    </a>
+
+    <nav class="nav" aria-label="Hoofdnavigatie">
+      <a href="https://nieuws.mijndomein.nl/">Blog</a>
+      <a href="/hc/nl/p/onboarding">Aan de slag</a>
+      
+        <a href="/hc/nl/p/community">Community</a>
+      
+      <a href="/hc/nl/p/contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      
+        <a class="btn btn-primary" role="link" rel="nofollow" data-auth-action="signin" title="Wordt in een dialoogvenster geopend" href="/hc/nl/signin?return_to=https%3A%2F%2Fmijndomein.zendesk.com%2Fhc%2Fnl%2Farticles%2F40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">Inloggen</a>
+      
+      <button class="mobile-menu" type="button" aria-label="Menu" aria-expanded="false" data-mobile-menu>☰</button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" data-mobile-nav aria-label="Mobiele navigatie">
+    
+      <a class="mobile-sign-in" role="link" rel="nofollow" data-auth-action="signin" title="Wordt in een dialoogvenster geopend" href="/hc/nl/signin?return_to=https%3A%2F%2Fmijndomein.zendesk.com%2Fhc%2Fnl%2Farticles%2F40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">Inloggen</a>
+      <span class="mobile-nav-divider"></span>
+    
+    <a href="/hc/nl/p/contact">Contact</a>
+    <a href="https://nieuws.mijndomein.nl/">Blog</a>
+    <a href="/hc/nl/p/onboarding">Aan de slag</a>
+    
+      <a href="/hc/nl/p/community">Community</a>
+    
+  </nav>
+</header>
+
+
+  <main role="main">
+    <main id="main-content">
+  <div class="container page-breadcrumbs"><nav aria-label="Broodkruimel">
+  <ol class="breadcrumbs">
+    
+      <li>
+        
+          <a href="/hc/nl">Mijndomein Helpdesk</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="/hc/nl/categories/360003429258-Actuele-Status">Actuele Status</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="/hc/nl/sections/360005235238-Verstoringen">Verstoringen</a>
+        
+      </li>
+    
+  </ol>
+</nav>
+</div>
+  <div class="container article-layout">
+    <article class="article">
+      <h1>MijnAccount, Mijndomein, Webhosting &amp; Webmail offline; PHP-kwetsbaarheden ( CVE-2026-109618 / CVE-2026-109619 )</h1>
+      <div class="article-meta-row" aria-label="Artikelinformatie">
+        <span>Bijgewerkt <time datetime="2026-10-21T12:38:14Z" title="2026-10-21T12:38:14Z" data-format="LL" data-datetime="calendar">21 oktober 2026 12:38</time></span>
+        <span>Gepubliceerd <time datetime="2026-10-21T11:14:54Z" title="2026-10-21T11:14:54Z" data-format="LL" data-datetime="calendar">21 oktober 2026 11:14</time></span>
+        <span data-reading-time>Leestijd wordt berekend…</span>
+        
+        
+      </div>
+      
+
+      <div class="article-body" data-article-body><div data-test-id="guide-markup-preview">
+<h2 id="h_01M5F1GKVR509PN21ER0S89HEC"><strong>Jouw veiligheid gaat voor</strong></h2>
+<div style="background-color: #f7f2fd; border-radius: 8px; border: 2px solid #6a2fad; margin-bottom: 18px; padding: 18px 22px;">
+<p style="font-size: 1.15em; margin-top: 0;"><strong>Jouw veiligheid gaat voor.</strong></p>
+<p>Daarom zijn onze websites en die van onze klanten tijdelijk offline.<br><br>Er is een ernstig beveiligingslek ontdekt in PHP, een technologie die wereldwijd door miljoenen websites wordt gebruikt. Dit kan grote risico's opleveren voor de veiligheid van websites en gegevens.</p>
+<p>Bij Mijndomein nemen we geen enkel onnodig risico als het gaat om de veiligheid van onze klanten. Daarom hebben we besloten om uit voorzorg onze eigen website en de websites die wij hosten tijdelijk offline te halen. <strong>We begrijpen dat dit vervelend is, maar veiligheid gaat voor bereikbaarheid. Altijd.</strong></p>
+<p>Zodra de beveiligingsupdate beschikbaar is, gaan onze specialisten direct aan de slag om deze door te voeren en alle websites zo snel mogelijk weer veilig online te brengen.</p>
+<p>We houden jullie op de hoogte via deze pagina.</p>
+<p>Bedankt voor je begrip en geduld.</p>
+<p style="margin-bottom: 0;"><strong>Team Mijndomein</strong></p>
+</div>
+<hr>
+<h2 id="h_01M5F59M0JB5Q9PVSX6CN6JYK4"><strong>Huidige Status</strong></h2>
+<ul>
+<li data-list-item-id="ebe9270b52e6f0be4eab70ade187ee3d8">[ x ] Onderzoek gaande</li>
+<li data-list-item-id="e7a45d9ae8479c0d839b90a8af89278ea">[ x ] Tijdelijke oplossing beschikbaar</li>
+<li data-list-item-id="ea0942b0eafc8cf1f768266976d4dde7e">[ ] Storing opgelost</li>
+</ul>
+<p><strong>Let op:</strong> uit voorzorg worden de getroffen websites en diensten sinds <strong>13:35 tijdelijk offline gezet</strong> tot de beveiligingsupdate van PHP is aangebracht.</p>
+<hr>
+<ul>
+<li class="wysiwyg-list-bold" data-list-item-id="ec5c0594b20634aa43fa77a1bec37ec1c"><h4 id="h_01M5F1GKVWQ45KY06HTBA5Y3GM"><a rel="noopener noreferrer"><strong><span class="wysiwyg-underline">Details van de verstoring</span></strong></a></h4></li>
+<li class="wysiwyg-list-bold" data-list-item-id="e9c5756cf86180c9ac7d77f44ad21eeb0"><h4 id="h_01M5F1GKVZ7P7RSDY36B6EG1RB"><a rel="noopener noreferrer"><strong><span class="wysiwyg-underline">Updates en storingslog</span></strong></a></h4></li>
+</ul>
+<hr>
+<h2 id="h_01M5F6BXEVNBWSKEBEVWNBJ9NF"><strong>Details van de verstoring</strong></h2>
+<p><strong>Getroffen diensten:</strong></p>
+<p>Deze melding betreft onze diensten welke van PHP gebruik maken.<br>De maatregelen treffen alle klanten met een van de volgende pakketten en diensten:</p>
+<ul>
+<li data-list-item-id="eb0efdf06c5f0a436105e77a90620a3e1">Webhosting Start</li>
+<li data-list-item-id="e00ed8b9c3d95d61fbd2aacfb215a8fa2">Webhosting Plus</li>
+<li data-list-item-id="e3d1f0d9266e9a16029bb46a4b339c922">Managed WordPress</li>
+<li data-list-item-id="e5db25f227cf3eaf3270b9454fc451a15">Managed WooCommerce</li>
+<li data-list-item-id="e0b41bdbdb994284f4ba3509937eba910">MijnAccount &amp; mijndomein.nl</li>
+<li data-list-item-id="eb2e0da4b77e3b61cc257b641bd47f6a3">Webmail</li>
+</ul>
+<p>Op 20 oktober 2026 heeft het PHP-team twee kritieke beveiligingskwetsbaarheden in PHP aangekondigd ( <em>CVE-2026-109618 en CVE-2026-109619</em> ).</p>
+<p>Zouden deze misbruikt worden, dan kan een aanvallende partij potentieel ongewenste code kunnen uitvoeren op servers die PHP draaien, met als mogelijk gevolg ongeautoriseerde toegang tot websites, bestanden en gegevens.</p>
+<p><a href="#begin" rel="noopener noreferrer"><strong>Naar het begin</strong></a></p>
+<hr>
+<h2 id="h_01M5F47TGGR9Q2S9Z5X5VT4VG7">
+<strong>Preventieve uitschakeling ( </strong><em><strong>besloten om 13:35</strong></em><strong> )</strong>
+</h2>
+<p>Het PHP-team heeft bevestigd dat deze kwetsbaarheden <strong>niet volledig voorkomen kunnen worden</strong> door configuratiewijzigingen of beveiligingsregels alleen. De enige volledige bescherming is de officiële beveiligingsrelease van PHP.</p>
+<p>Om te garanderen dat er in de tussentijd geen enkele kans op misbruik bestaat, hebben wij besloten om alle websites en diensten proactief en tijdelijk offline te gaan zetten. Een tijdelijke onbereikbaarheid is voor ons een kleiner risico dan de mogelijkheid van een inbraak in jouw website of gegevens.</p>
+<p><strong>Wanneer gaat de website weer online?</strong><br>Zodra de beveiligingsrelease van PHP ( <em>gepland voor vandaag om 14:00 UTC / 16:00 Amsterdam</em> ) en de bijbehorende pakketten van onze leverancier ( <em>Plesk</em> ) beschikbaar zijn, brengen wij de updates direct aan en zetten wij de websites en diensten zo snel mogelijk weer online.</p>
+<p>Om de veiligheid van onze klant websites te waarborgen, hebben wij in de loop van deze ochtend de volgende stappen doorlopen:</p>
+<ul>
+<li data-list-item-id="e3f7f794b95444661f41d03e4cde61d97">Preventieve beschermingsmaatregelen geactiveerd op onze webhostingservers;</li>
+<li data-list-item-id="e418afc8bdf3e1e65853691a3256df7b0">De beveiligingsrelease van PHP nauwlettend in de gaten gehouden.<br>Deze is door het PHP-team gepland voor <strong>woensdag 21 oktober 2026 om 14:00 ( UTC ) / 16:00 ( Amsterdam )</strong>
+</li>
+<li data-list-item-id="e93279a055afb28f3e13dfe13a8a0d86a">Zodra de update beschikbaar is via onze leveranciers ( <em>PHP en Plesk</em> ), brengen wij deze zo snel mogelijk aan op onze servers.</li>
+<li data-list-item-id="ed9129a33a7993441a92abf039930a481">
+<strong>Per 13:35</strong> is besloten alle websites en diensten preventief offline te zetten tot de update is aangebracht, hiervoor zijn onze collega's nu bezig.</li>
+</ul>
+<p><a href="#begin" rel="noopener noreferrer"><strong>Naar het begin</strong></a></p>
+<hr>
+<h2 id="Opvolging"><strong>Updates en statuslog</strong></h2>
+<h3 id="h_01M5F1GKW6DT3X5913FBDGVPEX"><strong>Volgende statusupdate</strong></h3>
+<p>De volgende update wordt verstrekt <strong>zodra de officiële beveiligingsrelease van PHP is verschenen</strong> ( <em>vandaag gepland om 16:00</em> ), of eerder als er belangrijke ontwikkelingen zijn.</p>
+<p>Bij nieuwe informatie wordt dit artikel bijgewerkt.</p>
+<h3 id="h_01M5F1GKW7J3H6MVZB573VG3NX"><strong>Statuslog</strong></h3>
+<ul>
+<li data-list-item-id="ef2e07554b07b78befc82cef414596a53">
+<strong>2026-10-21 10:46</strong> - Onderzoek gestart.</li>
+<li data-list-item-id="eb58b44f9cd3b058922a57e86053c2e39">
+<strong>2026-10-21 11:00</strong> - Extra noodmaatregel besloten op alle Plesk-servers.</li>
+<li data-list-item-id="e4366f1d4ef8f3a034ed58a58b1a82e27">
+<strong>2026-10-21 11:34</strong> - Uitrollen van mitigerende maatregelen gestart.</li>
+<li data-list-item-id="e4e9ff3b54783604e06e56c92a85b48e7">
+<strong>2026-10-21 12:15</strong> - Mitigaties live op alle Plesk-servers.</li>
+<li data-list-item-id="ef18b465e2b84071bc99ae28b2f143238">
+<strong>2026-10-21 13:15</strong> - Overleg over aanvullende maatregelen: preventieve uitschakeling van websites en diensten.</li>
+<li data-list-item-id="e10f8e68b9ba641aed16b72906d16852e">
+<strong>2026-10-21 13:35</strong> - <strong>Besloten;</strong> alle websites en diensten gaan preventief offline tot de beveiligingsupdate van PHP/Plesk is aangebracht. Onze collega's zijn hiervoor nu bezig.</li>
+<li data-list-item-id="e3a80bcf476997d0147ea026f117da625">
+<strong>2026-10-21 14:30</strong> - Alle klant websites zijn inmiddels preventief offline gehaald tot de beveiligingsupdate van PHP/Plesk is uitgebracht.</li>
+</ul>
+<p><a href="#begin" rel="noopener noreferrer"><strong>Naar het begin</strong></a></p>
+<hr>
+</div></div>
+
+      <section class="article-support-cta">
+  <div><span class="section-kicker">Nog hulp nodig?</span><h2>Kom je er niet uit?</h2><p>Stuur Customer Success een bericht. Je ontvangt onze reactie per e-mail.</p></div>
+  <div class="article-support-actions">
+    
+    <a class="btn btn-secondary" href="/hc/nl/requests/new">Stuur ons een bericht</a>
+  </div>
+</section>
+
+
+      <section class="article-votes" aria-label="Artikel feedback">
+        <h3>Heeft dit je probleem opgelost?</h3>
+        <div class="article-vote-controls">
+          
+            <button type="button" class="article-vote-up" data-auth-action="signin" aria-label="Dit artikel was nuttig" aria-pressed="false">Ja</button>
+            <button type="button" class="article-vote-down" data-auth-action="signin" aria-label="Dit artikel was niet nuttig" aria-pressed="false">Nee</button>
+            <span class="article-vote-label">Aantal gebruikers dat dit nuttig vond: 1 van 2</span>
+          
+        </div>
+      </section>
+    </article>
+
+    <aside class="article-sidebar">
+      <section class="toc sidebar-block" data-toc-shell hidden><h4>Op deze pagina</h4><div data-article-toc></div></section>
+      
+        
+          <section class="section-related sidebar-block" data-section-related data-current-article-id="40010485409170">
+            <h3>Meer over dit onderwerp</h3>
+            <div class="section-related-list">
+              
+                <a href="/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619" data-section-article-id="40010485409170"><span>MijnAccount, Mijndomein, Webhosting &amp; Webmail offline; PHP-kwetsbaarheden ( CVE-2026-109618 / CVE-2026-109619 )</span><span aria-hidden="true">→</span></a>
+              
+            </div>
+          </section>
+        
+      
+      <div class="sidebar-block sidebar-block--promo">
+  
+    
+      <a class="promo-card promo-card--image-only" href="https://www.mijndomein.nl/producten/webhosting?utm_source=helpdesk&amp;utm_medium=homepage_banner" aria-label="Bekijk de Mijndomein actie" data-configured-url>
+        <img class="promo-card-image" src="/hc/theming_assets/01M4G597KKJ2TDPWDSGGKPEY4Q" alt="">
+      </a>
+    
+  
+
+</div>
+    </aside>
+  </div>
+
+  
+    <section class="container article-related-bottom" data-related-bottom>
+      <div class="article-related-heading">
+        <span class="section-kicker">Verder lezen</span>
+        <h2>Misschien helpt dit je ook</h2>
+      </div>
+      <div class="article-related-bottom-grid article-related-bottom-grid--single">
+        <section class="related-articles related-bottom-card" data-native-related>
+          <h3>Gerelateerde artikelen</h3>
+          <div data-native-related-content>
+  <section class="related-articles">
+    
+      <h2 class="related-articles-title">Verwante artikelen</h2>
+    
+    <ul>
+      
+        <li>
+          <a href="/hc/nl/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCDIeI9JTADoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJIlxapjJDoLbG9jYWxlSSIHbmwGOgZFVDoIdXJsSSJGL2hjL25sL2FydGljbGVzLzM2MDAwNzgwMjQxOC1NaWpuLXdlYnNpdGUtdGlqZGVsaWprLW9mZmxpbmUtaGFsZW4GOwhUOglyYW5raQY%3D--b380fc21bc74a197d8593c286780ac5c63cdf1bf" rel="nofollow">Mijn website tijdelijk offline halen</a>
+        </li>
+      
+        <li>
+          <a href="/hc/nl/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCJEYFMcuBDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJIlxapjJDoLbG9jYWxlSSIHbmwGOgZFVDoIdXJsSSJLL2hjL25sL2FydGljbGVzLzQ1OTg5NTQ5ODk3MTMtSW5sb2dnZW4tb3AtamUtV2ViaG9zdGluZ3Bha2tldC1pbi1QbGVzawY7CFQ6CXJhbmtpBw%3D%3D--4e73698ef497c30befdf3d2a9ad8aec22c4ab5ea" rel="nofollow">Inloggen op je Webhostingpakket in Plesk</a>
+        </li>
+      
+        <li>
+          <a href="/hc/nl/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCHIKwNFTADoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJIlxapjJDoLbG9jYWxlSSIHbmwGOgZFVDoIdXJsSSI4L2hjL25sL2FydGljbGVzLzM2MDAwMTMwOTI5OC1JbmxvZ2dlbi1vcC1kZS13ZWJtYWlsBjsIVDoJcmFua2kI--6f8fb891b7822104bcbed19bd24cc19174477fb4" rel="nofollow">Inloggen op de webmail</a>
+        </li>
+      
+        <li>
+          <a href="/hc/nl/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCJL5vnpbJDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJIlxapjJDoLbG9jYWxlSSIHbmwGOgZFVDoIdXJsSSJ3L2hjL25sL2FydGljbGVzLzM5OTc1MzE5OTU5OTU0LTIwLTEwLTI2LUJldmVpbGlnaW5nc2xlay1pbi1Xb3JkUHJlc3MtcGx1Zy1pbi1VcGRyYWZ0UGx1cy1vbnRkZWt0LXVwZGF0ZS1qZS1wbHVnLWluBjsIVDoJcmFua2kJ--cd31161a6bf67ddaae58a794477ae42e9b8e3f3e" rel="nofollow">20/10/26 Beveiligingslek in WordPress-plug-in UpdraftPlus ontdekt: update je plug-in.</a>
+        </li>
+      
+        <li>
+          <a href="/hc/nl/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCBEa%2F%2BbgBzoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJIlxapjJDoLbG9jYWxlSSIHbmwGOgZFVDoIdXJsSSIwL2hjL25sL2FydGljbGVzLzg2NjI1Mjk1NDY3NjktRE5TLUluc3RlbGxlbgY7CFQ6CXJhbmtpCg%3D%3D--dfb9d60073f4b2a0fee344e15428cfe6b298e2d1" rel="nofollow">DNS Instellen</a>
+        </li>
+      
+    </ul>
+  </section>
+
+</div>
+        </section>
+      </div>
+    </section>
+  
+</main>
+
+  </main>
+
+  
+<section class="footer-domain-search" aria-label="Domeinnaam zoeken">
+  <div class="container">
+    <div class="footer-domain-search-inner">
+      <div class="domain-search-copy"><span class="section-kicker">Klaar voor iets nieuws?</span><h2>Wat wordt jouw domein?</h2><p>Check meteen of jouw idee nog beschikbaar is.</p></div>
+      <form class="domain-search-form" action="https://www.mijndomein.nl/shop/check-domeinnaam" data-configured-url method="get" target="_blank" rel="noopener">
+      <label class="sr-only" for="footer-domain-query">Kies je domeinnaam</label>
+      <input id="footer-domain-query" type="text" name="domeinnaam" placeholder="Kies je domeinnaam" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Check nu</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand-logo-link" title="Start" href="/hc/nl"><img class="footer-logo" src="/hc/theming_assets/01M4G56ZQXBR6HC228KWCG2940" alt="Mijndomein"></a>
+        <p>Een plek om iets op te lossen, iets te leren of gewoon contact met ons op te nemen.</p>
+      </div>
+      <div><h4>Helpdesk</h4><a href="/hc/nl#onderwerpen">Onderwerpen</a><a href="/hc/nl/p/onboarding">Startgidsen</a><a href="#" data-configured-url>Status</a></div>
+      <div><h4>Contact</h4><a href="/hc/nl/requests/new">Stuur ons een bericht</a><a href="/hc/nl/p/contact#abuse">Abuse melden</a><a href="/hc/nl/p/contact">Alle contactopties</a></div>
+      <div><h4>Meer</h4><a href="/hc/nl/p/community">Community</a><a rel="nofollow" data-auth-action="signin" title="Wordt in een dialoogvenster geopend" role="button" href="/hc/nl/signin?return_to=https%3A%2F%2Fmijndomein.zendesk.com%2Fhc%2Fnl%2Farticles%2F40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619">Inloggen</a><a href="https://mijndomein.nl/login" data-configured-url>Mijn Account</a><a href="https://mijndomein.nl/privacy/" data-configured-url>Privacy</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© Mijndomein</span>
+      
+    </div>
+  </div>
+</footer>
+
+
+
+  <meta name="md-nicereply-token" content="6Z_E5wAmGVTH">
+  <script>
+    (function () {
+      var node = document.querySelector('meta[name="md-nicereply-token"]');
+      var token = node ? String(node.getAttribute('content') || '').trim() : '';
+      if (!/^[A-Za-z0-9_-]{6,100}$/.test(token)) {
+        if (token) console.warn('[Mijndomein Helpdesk] Ignoring invalid Nicereply widget token.');
+        return;
+      }
+      var loaded = false;
+      function loadNicereply() {
+        if (loaded) return;
+        loaded = true;
+        window.NicereplyWidgetObject = 'nicereplyWidget';
+        window.nicereplyWidget = window.nicereplyWidget || function () {
+          window.nicereplyWidget.c = window.nicereplyWidget.c || [];
+          window.nicereplyWidget.c.push(arguments);
+        };
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://widget.nr-cdn.com/init.js';
+        script.referrerPolicy = 'strict-origin-when-cross-origin';
+        (document.body || document.documentElement).appendChild(script);
+        window.nicereplyWidget('init', token);
+      }
+      function statisticsConsentGranted() {
+        return Boolean(window.Cookiebot && window.Cookiebot.consent && window.Cookiebot.consent.statistics === true);
+      }
+      function applyConsent() {
+        if (statisticsConsentGranted()) loadNicereply();
+      }
+      window.addEventListener('CookiebotOnConsentReady', applyConsent, {passive:true});
+      window.addEventListener('CookiebotOnAccept', applyConsent, {passive:true});
+      applyConsent();
+    }());
+  </script>
+
+
+
+
+  <!-- / -->
+
+  
+  <script src="//static.zdassets.com/hc/assets/nl.4af2c57e5c2393762772.js"></script>
+  
+
+  <script type="text/javascript">
+  /*
+
+    Greetings sourcecode lurker!
+
+    This is for internal Zendesk and legacy usage,
+    we don't support or guarantee any of these values
+    so please don't build stuff on top of them.
+
+  */
+
+  HelpCenter = {};
+  HelpCenter.account = {"subdomain":"mijndomein","environment":"production","name":"Helpdesk"};
+  HelpCenter.user = {"identifier":"da39a3ee5e6b4b0d3255bfef95601890afd80709","email":null,"name":"","role":"anonymous","avatar_url":"https://assets.zendesk.com/hc/assets/default_avatar.png","is_admin":false,"external_id":null,"organizations":[],"groups":[]};
+  HelpCenter.internal = {"asset_url":"//static.zdassets.com/hc/assets/","web_widget_asset_composer_url":"https://static.zdassets.com/ekr/snippet.js","current_session":{"locale":"nl","csrf_token":"hc:hcobject:server:z_R8Td3HBX1pb3HYB_RqiXHNgfXc9JD92qZpZXF9gUA7oFtVnkjM5v4hkEIEkfaFbOyFzAuAuaDc6baSPwA2qQ","shared_csrf_token":null},"usage_tracking":{"event":"article_viewed","data":"BAh7CDoLbG9jYWxlSSIHbmwGOgZFVDoPYXJ0aWNsZV9pZGwrCJIlxapjJDoKX21ldGF7DDoPYWNjb3VudF9pZGkDZJgEOhNoZWxwX2NlbnRlcl9pZGkEKOfrCzoNYnJhbmRfaWRpAlFzOgx1c2VyX2lkMDoTdXNlcl9yb2xlX25hbWVJIg5BTk9OWU1PVVMGOwZUOwBJIgdubAY7BlQ6GmFub255bW91c190cmFja2luZ19pZDA=--39d21a175e32682482ac6b913707ae0597bdea9b","url":"https://mijndomein.zendesk.com/hc/activity"},"current_record_id":"40010485409170","current_record_url":"/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619","current_record_title":"MijnAccount, Mijndomein, Webhosting \u0026 Webmail offline; PHP-kwetsbaarheden ( CVE-2026-109618 / CVE-2026-109619 )","current_text_direction":"ltr","current_brand_id":29521,"current_brand_name":"mijndomein.nl - helpdesk","current_brand_url":"https://mijndomein.zendesk.com","current_brand_active":true,"current_path":"/hc/nl/articles/40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619","show_autocomplete_breadcrumbs":true,"user_info_changing_enabled":false,"has_user_profiles_enabled":false,"has_end_user_attachments":true,"user_aliases_enabled":false,"has_anonymous_kb_voting":false,"has_multi_language_help_center":true,"show_at_mentions":false,"embeddables_config":{"embeddables_web_widget":true,"embeddables_help_center_auth_enabled":false,"embeddables_connect_ipms":false},"answer_bot_subdomain":"static","gather_plan_state":"subscribed","has_article_verification":true,"has_gather":true,"has_ckeditor":true,"has_community_enabled":false,"has_community_badges":true,"has_community_post_content_tagging":false,"has_gather_content_tags":true,"has_guide_content_tags":true,"has_user_segments":true,"has_answer_bot_web_form_enabled":true,"has_garden_modals":false,"has_auth_email_less_sso":false,"theming_cookie_key":"hc-da39a3ee5e6b4b0d3255bfef95601890afd80709-2-preview","is_preview":false,"has_search_settings_in_plan":true,"theming_api_version":4,"theming_settings":{"logo":"/hc/theming_assets/01M4G56ZQXBR6HC228KWCG2940","favicon":"/hc/theming_assets/01M4G5702WGEH6EGEKMNBV114A","domeintje_avatar":"/hc/theming_assets/01M4G570EGR8428PGVS88CKMZK","domeintje_idea":"/hc/theming_assets/01M4G570TJRXYTYM9AW5G8XK4C","account_url":"https://mijndomein.nl/login","status_url":"#","privacy_url":"https://mijndomein.nl/privacy/","color_brand_primary":"#6B2FAD","color_brand_dark":"#24103A","color_brand_secondary":"#00DBDB","color_page_bg":"#FBFCF9","text_color":"#1E2029","color_muted":"#536171","color_line":"#E6E2EA","link_color":"#6B2FAD","hover_link_color":"#472075","visited_link_color":"#6B2FAD","generative_answers_enabled":true,"heading_font":"\"Circular Std\", \"Avenir Next\", Avenir, Arial, sans-serif","text_font":"\"Circular Std\", \"Avenir Next\", Avenir, Arial, sans-serif","announcement_enabled":true,"announcement_type":"critical","announcement_title":"We nemen preventieve beveiligingsmaatregelen","announcement_body":"Hierdoor is onze mijndomein.nl en MijnAccount, webhosting en webmail tijdelijk niet beschikbaar. E-mailverkeer, Websitemaker en Webshop blijven werken.","announcement_link_label":"Bekijk de status hier.","announcement_link_url":"https://mijndomein.zendesk.com/hc/nl/articles/40010485409170-Beveiligingsupdate-MijnAccount-Mijndomein-Webhosting-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619","hero_eyebrow":"Mijndomein Helpdesk","hero_title":"Waar kunnen we je mee helpen?","hero_body":"Vind snel een antwoord, regel het zelf of neem direct contact op. ","search_placeholder":"Bijvoorbeeld: hoe stel ik mijn e-mail in op iPhone?","quick_search_1":"Hoe stel ik mijn e-mailadres in?","quick_search_2":"Waar vind ik mijn factuur?","quick_search_3":"Hoe log ik in op Mijn Account?","task_1_enabled":true,"task_1_icon":"/hc/theming_assets/01M4G5714Q6GWNST7JAPYKNY50","task_1_title":"Ik wil mijn e-mail instellen","task_1_body":"Op telefoon, computer of in een mailprogramma.","task_1_articles":"https://mijndomein.zendesk.com/hc/nl/articles/200448252-E-mail-instellen-in-een-eigen-e-mailprogramma-met-IMAP","task_1_sections":"","task_2_enabled":true,"task_2_icon":"/hc/theming_assets/01M4G571EG9HCFHWD7BJQT5JT8","task_2_title":"Ik heb een vraag over mijn factuur","task_2_body":"Bekijken, betalen, kosten of verlenging.","task_2_articles":"","task_2_sections":"https://mijndomein.zendesk.com/hc/nl/categories/22797695982866-Mijn-Account-en-facturen","task_3_enabled":true,"task_3_icon":"/hc/theming_assets/01M4G571EG9HCFHWD7BJQT5JT8","task_3_title":"Ik wil een pakket wijzigen","task_3_body":"Upgraden, downgraden of opzeggen.","task_3_articles":"","task_3_sections":"","task_4_enabled":true,"task_4_icon":"/hc/theming_assets/01M4G57208ZFDE7RM2GT3N5MS0","task_4_title":"Mijn website werkt niet","task_4_body":"Niet bereikbaar, foutmelding of blanco pagina","task_4_articles":"","task_4_sections":"https://mijndomein.zendesk.com/hc/nl/sections/360001416557-Mijn-website-werkt-niet-goed-is-offline","task_5_enabled":true,"task_5_icon":"/hc/theming_assets/01M4G5714Q6GWNST7JAPYKNY50","task_5_title":"Mijn e-mail werkt niet","task_5_body":"Niet verzenden, niet ontvangen of foutmelding","task_5_articles":"","task_5_sections":"https://mijndomein.zendesk.com/hc/nl/sections/14344409778705-Problemen-oplossen","task_6_enabled":true,"task_6_icon":"/hc/theming_assets/01M4G571EG9HCFHWD7BJQT5JT8","task_6_title":"Ik kan niet inloggen","task_6_body":"Wachtwoord, 2FA of accounttoegang","task_6_articles":"","task_6_sections":"","regelen_articles":"","regelen_sections":"","problemen_articles":"","problemen_sections":"","categories_title":"Of kies een onderwerp","categories_body":"Ontdek onze handleidingen en antwoorden per onderwerp en kies de route die het beste bij je vraag past.","all_categories_label":"Bekijk alle categorieën","topic_featured_label":"Uitgelicht","topic_sections_label":"Bekijk per onderdeel","topic_empty_text":"Voor dit onderwerp hebben we nog geen uitgelichte inhoud. Gebruik de zoekfunctie of bekijk alle categorieën.","cat_01_enabled":true,"cat_01_icon":"/hc/theming_assets/01M4G571EG9HCFHWD7BJQT5JT8","cat_01_title":"Abonnementen en betalingen","cat_01_subtitle":"Bekijk en wijzig je producten, regel je facturen en betalingen of wijzig een abonnement.","cat_01_articles":"","cat_01_sections":"https://mijndomein.zendesk.com/hc/nl/sections/22842607162002-Mijn-facturen, https://mijndomein.zendesk.com/hc/nl/sections/22842622868754-Betaalopties, https://mijndomein.zendesk.com/hc/nl/sections/200123732-Pakket-wijzigen, https://mijndomein.zendesk.com/hc/nl/sections/360001196437-Opzeggen","cat_02_enabled":true,"cat_02_icon":"/hc/theming_assets/01M4G5731KWPMS3FSXBGG6QRK1","cat_02_title":"Domeinnaam","cat_02_subtitle":"Registreer, verhuis en beheer je domeinnaam-registraties.","cat_02_articles":"","cat_02_sections":"https://mijndomein.zendesk.com/hc/nl/sections/200126672-Een-nieuwe-domeinnaam-registreren, https://mijndomein.zendesk.com/hc/nl/sections/360002059817-Domeinnaam-verhuizen-naar-Mijndomein, https://mijndomein.zendesk.com/hc/nl/sections/200121551-Van-Mijndomein-weg-verhuizen, https://mijndomein.zendesk.com/hc/nl/sections/360004903538-Een-domeinnaam-doorverwijzen","cat_03_enabled":false,"cat_03_icon":"/hc/theming_assets/01M4G573BFDF7DPA54F7CEX039","cat_03_title":"DNS \u0026 doorverwijzingen","cat_03_subtitle":"Nameservers, DNS-records en doorsturen.","cat_03_articles":"","cat_03_sections":"","cat_04_enabled":true,"cat_04_icon":"/hc/theming_assets/01M4G5714Q6GWNST7JAPYKNY50","cat_04_title":"E-mail","cat_04_subtitle":"Maak e-mailadressen aan, stel je e-mail in en beheer je mailbox.","cat_04_articles":"https://mijndomein.zendesk.com/hc/nl/articles/360001309298-Inloggen-op-de-webmail, https://mijndomein.zendesk.com/hc/nl/articles/200448252-E-mail-instellen-in-een-eigen-e-mailprogramma-met-IMAP, ","cat_04_sections":"https://mijndomein.zendesk.com/hc/nl/categories/200032981-E-mail","cat_05_enabled":true,"cat_05_icon":"/hc/theming_assets/01M4G57208ZFDE7RM2GT3N5MS0","cat_05_title":"Website en Webshop","cat_05_subtitle":"Maak, publiceer en beheer je website of webshop.","cat_05_articles":"","cat_05_sections":"","cat_06_enabled":true,"cat_06_icon":"/hc/theming_assets/01M4G574486AC8FZN607EGBB2G","cat_06_title":"Online vindbaarheid","cat_06_subtitle":"Zorg dat je website beter gevonden wordt.","cat_06_articles":"","cat_06_sections":"","cat_07_enabled":false,"cat_07_icon":"/hc/theming_assets/01M4G574ED7F7P6K4JCGPTHQHX","cat_07_title":"Websitemaker","cat_07_subtitle":"Bouwen, publiceren en je site aanpassen.","cat_07_articles":"","cat_07_sections":"","cat_08_enabled":false,"cat_08_icon":"/hc/theming_assets/01M4G574RGXBZ05KQ1DGKEY9B8","cat_08_title":"Webshop","cat_08_subtitle":"Je webshop opzetten en beheren.","cat_08_articles":"","cat_08_sections":"","cat_09_enabled":true,"cat_09_icon":"/hc/theming_assets/01M4G5752S095RGEHMBFM194CG","cat_09_title":"Veiligheid \u0026 Privacy","cat_09_subtitle":"Beveilig je account en diensten, beheer je privacy en meld misbruik.","cat_09_articles":"","cat_09_sections":"","onboarding_enabled":true,"onboarding_guide_1_title":"E-mail instellen","onboarding_guide_1_url":"","onboarding_guide_2_title":"Je domeinnaam gebruiken","onboarding_guide_2_url":"","onboarding_guide_3_title":"Je website starten","onboarding_guide_3_url":"","onboarding_guide_4_title":"Je webshop starten","onboarding_guide_4_url":"","onboarding_tool_1_title":"Mijn Account","onboarding_tool_1_url":"https://mijndomein.nl/login","onboarding_tool_2_title":"Blog","onboarding_tool_2_url":"https://nieuws.mijndomein.nl/","onboarding_tool_3_title":"Actuele status","onboarding_tool_3_url":"https://mijndomein.zendesk.com/hc/nl/categories/360003429258-Actuele-Status","onboarding_tool_4_title":"Domeinnaam checken","onboarding_tool_4_url":"https://www.mijndomein.nl/shop/check-domeinnaam","promo_enabled":true,"promo_url":"https://www.mijndomein.nl/producten/webhosting?utm_source=helpdesk\u0026utm_medium=homepage_banner","promo_image":"/hc/theming_assets/01M4G597KKJ2TDPWDSGGKPEY4Q","messaging_enabled":false,"messaging_label":"Start een gesprek","messaging_ai_label":"Vraag Domeintje","messaging_ai_response_time":"Direct antwoord","messaging_use_business_hours":false,"messaging_business_days":"1,2,3,4,5","messaging_business_windows":"09:00-12:00,13:00-16:00","messaging_business_timezone":"Europe/Amsterdam","messaging_availability_url":"","messaging_offline_text":"Domeintje helpt je direct. Is een medewerker nodig? Dan reageren we zo snel mogelijk en kun je het gesprek voortzetten wanneer het jou uitkomt.","contact_title":"Hoe wil je contact met ons opnemen?","contact_body":"Kies wat bij je vraag past. Zelf zoeken mag, maar hoeft niet.","abuse_form_id":"","abuse_form_url":"","show_response_times":true,"messaging_response_time":"Start een gesprek met Domeintje","message_response_time":"We reageren binnen 24 uur per e-mail.","response_times_note":"Wachttijden kunnen bij drukte afwijken.","community_coming_soon":true,"community_intro_title":"Vraag het aan mensen die het al eens hebben gedaan.","community_intro_body":"Deel ervaringen, stel een niet-urgente vraag of help een andere ondernemer op weg.","community_urgent_note":"Gaat je vraag over je account, een storing of iets urgents? Neem dan contact op met Customer Success.","article_show_toc":true,"article_show_promo":true,"article_help_title":"Kom je er niet uit?","article_help_body":"Neem contact op als je er met dit artikel niet uitkomt. Chat met ons wanneer we live zijn, of stuur ons een bericht.","article_show_created":true,"article_show_reading":true,"article_show_labels":false,"article_show_related":true,"domain_search_enabled":true,"domain_search_title":"Wat wordt jouw domein?","domain_search_placeholder":"Kies je domeinnaam","domain_search_button":"Check nu","domain_search_url":"https://www.mijndomein.nl/shop/check-domeinnaam","google_tag_id":"GTM-T3P74VX","nicereply_token":"6Z_E5wAmGVTH","typeform_enabled":true,"typeform_live_id":"01M288J1DZZNWY1AN39A76XENK"},"has_pci_credit_card_custom_field":true,"help_center_restricted":false,"is_assuming_someone_else":false,"flash_messages":[],"user_photo_editing_enabled":true,"user_preferred_locale":"en-150","base_locale":"nl","login_url":"https://mijndomein.zendesk.com/access?locale=nl\u0026brand_id=29521\u0026return_to=https%3A%2F%2Fmijndomein.zendesk.com%2Fhc%2Fnl%2Farticles%2F40010485409170-MijnAccount-Mijndomein-Webhosting-Webmail-offline-PHP-kwetsbaarheden-CVE-2026-109618-CVE-2026-109619","has_alternate_templates":true,"has_custom_statuses_enabled":true,"has_hc_generative_answers_setting_enabled":true,"has_suggested_initial_questions_enabled":false,"has_contentful_eap":false,"has_contentful_eap_eligible":false,"has_pdf_ingestion_eap":true,"has_pdf_ingestion_eap_eligible":true,"has_saas_management":false,"has_knowledge_category_translation_modal":false,"has_guide_service_catalog":true,"has_csat_reverse_2_scale_in_mobile":false,"has_unified_navigation":true,"has_unified_navigation_eap_access":true,"has_knowledge_locale_display_names":true,"has_csat_bet365_branding":false,"has_csat_flora":false,"has_csat_theming_integration_phase_1":false,"has_help_center_gen_search_follow_up_conversation":true,"chat_page_renderable":false,"version":"v28080","dev_mode":false};
+</script>
+
+  
+  
+  <script src="//static.zdassets.com/hc/assets/hc_enduser-43bd7d52b00e5335ac966bab857ea142.js"></script>
+  <script type="text/javascript" src="/hc/theming_assets/301156/29521/script.js?digest=40011676757010"></script>
+  
+</body>
+</html>
