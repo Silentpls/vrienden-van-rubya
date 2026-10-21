@@ -4,7 +4,8 @@ const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
 /* header: transparent on hero, solid after scroll */
 const hdr=$('.hdr'), fd=$('.float-donate');
-const onScroll=()=>{const y=scrollY;hdr.classList.toggle('scrolled',y>40);fd&&fd.classList.toggle('show',y>600)};
+const noHero=!$('.hero');
+const onScroll=()=>{const y=scrollY;hdr.classList.toggle('scrolled',noHero||y>40);fd&&fd.classList.toggle('show',y>600)};
 addEventListener('scroll',onScroll,{passive:true});onScroll();
 $('.burger')?.addEventListener('click',()=>{const o=document.body.classList.toggle('menu-open');$('.burger').setAttribute('aria-expanded',o)});
 $$('.drawer a').forEach(a=>a.addEventListener('click',()=>document.body.classList.remove('menu-open')));

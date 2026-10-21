@@ -1,5 +1,6 @@
 // Static site generator: `node build.mjs` writes every page + assets/mapdata.js
 import fs from 'fs';
+import legal from './legal.mjs';
 const OUT = new URL('.', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1').replace(/%20/g, ' ');
 
 /* ---------- shared bits ---------- */
@@ -48,9 +49,10 @@ const NAV = [
   { t: 'Contact', h: 'contact.html' },
 ];
 
+const consentBox = (id) => `<label class="chk"><input type="checkbox" id="${id}" required> <span>Ik ga akkoord met de <a href="privacy.html">privacyverklaring</a> en wil de nieuwsbrief ontvangen.</span></label>`;
 const header = (cur) => `
 <header class="hdr"><div class="hdr-in">
-  <a class="logo" href="index.html" aria-label="Stichting Vrienden van Rubya, home"><span class="logo-chip">${LOGO}</span><span><b>Vrienden van Rubya</b><small>Stichting · Tanzania</small></span></a>
+  <a class="logo" href="index.html"><span class="logo-chip">${LOGO}</span><span><b>Vrienden van Rubya</b><small>Stichting · Tanzania</small></span></a>
   <ul class="nav" aria-label="Hoofdmenu">${NAV.map(n => `<li><a class="top" href="${n.h}"${n.h === cur || (n.sub && n.sub.some(s => s[1].split('#')[0] === cur)) ? ' aria-current="page"' : ''}>${n.t}${n.sub ? svg('<path d="m6 9 6 6 6-6"/>', 'class="car"') : ''}</a>${n.sub ? `<div class="sub">${n.sub.map(s => `<a href="${s[1]}">${s[0]}<small>${s[2]}</small></a>`).join('')}</div>` : ''}</li>`).join('')}</ul>
   <div class="hdr-cta"><a class="btn btn-primary btn-sm" href="doneren.html">Doneer ${I.heart}</a><button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button></div>
 </div></header>
@@ -67,7 +69,7 @@ const footer = () => `
     <div><h4>Projecten</h4><a href="ziekenhuis.html">Het ziekenhuis</a><a href="opleiding.html">Opleiding &amp; sponsoring</a><a href="palliatieve-zorg.html">Palliatieve zorg</a><a href="drinkwater.html">Drinkwater</a><a href="onderhoud.html">Onderhoudsplan</a><a href="ict.html">ICT-project</a></div>
     <div><h4>Steun ons</h4><a href="doneren.html">Word Vriend van Rubya</a><p style="font-size:.9rem;margin-top:.6rem">IBAN ${IBAN}<br>t.n.v. Stichting Vrienden van Rubya<br>BIC ABNANL2A</p><a href="contact.html" style="margin-top:.8rem">Contact opnemen</a></div>
   </div>
-  <div class="ftr-bot"><span>© ${new Date().getFullYear()} Stichting Vrienden van Rubya · RSIN 807248496 · Echobos 21, 1358 EG Almere</span><span>Foto's: Stichting Vrienden van Rubya</span></div>
+  <div class="ftr-bot"><span>© ${new Date().getFullYear()} Stichting Vrienden van Rubya · RSIN 807248496 · Echobos 21, 1358 EG Almere</span><span class="legal"><a href="privacy.html">Privacy</a><a href="toegankelijkheid.html">Toegankelijkheid</a><a href="contact.html#colofon">Colofon</a></span></div>
 </div></footer>`;
 
 const page = ({ file, title, desc, cur, body, extraJs = '' }) => `<!doctype html>
@@ -75,10 +77,8 @@ const page = ({ file, title, desc, cur, body, extraJs = '' }) => `<!doctype html
 <title>${title} | Stichting Vrienden van Rubya</title><meta name="description" content="${desc}">
 <meta property="og:title" content="${title} | Vrienden van Rubya"><meta property="og:description" content="${desc}"><meta property="og:image" content="images/Student-Revolving-Fund.jpg"><meta name="theme-color" content="#241812">
 <link rel="icon" href="${FAVICON}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>${header(cur)}<main>${body}</main>${footer()}
+<link rel="stylesheet" href="assets/fonts.css"><link rel="stylesheet" href="assets/site.css"></head>
+<body><a class="skip" href="#main">Naar de inhoud</a>${header(cur)}<main id="main" tabindex="-1">${body}</main>${footer()}
 <dialog class="lb"><button aria-label="Sluiten">✕</button><img alt=""><p></p></dialog>
 <script src="assets/site.js"></script>${extraJs}</body></html>`;
 
@@ -109,7 +109,7 @@ const PILLS = [
 const icon = (inner, x, y, s = 1.3) => `<g class="ic" transform="translate(${x} ${y}) scale(${s})">${inner.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g>`;
 const planDiagram = () => {
   const ys = [70, 190, 310, 430];
-  return `<div class="plan" aria-label="Plan van aanpak: van uw gift naar Rubya Hospital"><svg viewBox="0 0 1180 500" role="img" aria-labelledby="pt"><title id="pt">U geeft aan de Stichting, de Stichting steunt Rubya Hospital, het ziekenhuis gebruikt het voor vier speerpunten.</title>
+  return `<div class="plan"><svg viewBox="0 0 1180 500" role="group" aria-labelledby="pt"><title id="pt">U geeft aan de Stichting, de Stichting steunt Rubya Hospital, het ziekenhuis gebruikt het voor vier speerpunten.</title>
   <path class="route" pathLength="1" style="--d:.5" d="M190 250H290"/><path class="route" pathLength="1" style="--d:1.3" d="M500 250H600"/>
   ${ys.map((y, i) => `<path class="route" pathLength="1" style="--d:${2.1 + i * .15}" d="M810 250C860 250 860 ${y} 910 ${y}"/>`).join('')}
   <text class="tag" x="240" y="232" text-anchor="middle" style="opacity:.9">uw gift</text><text class="tag" x="550" y="232" text-anchor="middle">100%</text>
@@ -345,7 +345,7 @@ add(projectPage({
   factsArr: [['€ 35', 'per patiënt'], ['300', 'nieuwe patiënten per jaar'], ['14', 'dorpen, 60.000 inwoners'], ['32', 'vrijwilligers in de dorpen']],
   intro: `<h2>Zorg in de dorpen</h2><p>In 2014 volgde een verpleegkundige uit Rubya, dankzij de stichting, een jaar lang de speciale opleiding palliative care in Kampala bij Hospice Africa Uganda. Samen met collega's vormde zij een palliative care team dat actief is in het ziekenhuis en patiënten thuis bezoekt.</p><div class="quote">"U leest het goed: het kost slechts € 35 om iemand een menswaardig sterfbed te geven."</div><p>Eens per maand bezoekt het team de dorpen. Tussentijds worden ernstig zieke patiënten verzorgd door village health workers: leken met een aanvullende opleiding. Ongeveer 20% van de patiënten heeft morfine nodig om pijnvrij te zijn.</p>`,
   extra: `<section class="section bg-sand"><div class="container split"><div data-reveal><span class="eyebrow">Nu nodig</span><h2 style="margin:.7rem 0 1.2rem">Een fiets voor elke village health worker</h2><p class="lead">Om hun werk te vergemakkelijken vroegen de village health workers om fietsen voor hun huisbezoeken. Een fiets kost € 100 tot € 200.</p><p class="muted">Op het verjaardagsfeest van onze voorzitter werd al € 1.400 opgehaald: genoeg voor minimaal 7 en maximaal 14 fietsen. Doet u ook mee?</p><div class="hero-cta">${btn('doneren.html', 'Schenk een fiets', 'btn-primary', I.bike)}</div></div>
-  <div data-reveal><div class="bike" aria-label="Van 14 mogelijke fietsen is minimaal 7 gefinancierd">${Array.from({ length: 14 }, (_, i) => I.bike.replace('<svg', `<svg class="${i < 7 ? 'on' : ''}"`)).join('')}</div><p class="note" style="margin-top:14px">Donkerbruin: zeker gefinancierd (7 × € 200). Lichter: nog mogelijk bij € 100 per fiets.</p></div></div></section>`,
+  <div data-reveal><div class="bike" role="img" aria-label="Van 14 mogelijke fietsen is minimaal 7 gefinancierd">${Array.from({ length: 14 }, (_, i) => I.bike.replace('<svg', `<svg class="${i < 7 ? 'on' : ''}"`)).join('')}</div><p class="note" style="margin-top:14px">Donkerbruin: zeker gefinancierd (7 × € 200). Lichter: nog mogelijk bij € 100 per fiets.</p></div></div></section>`,
   timeline: [['2014', 'Opleiding in Kampala', 'Een jaar lang palliative care bij Hospice Africa Uganda, daarna 6 weken training door Clavera Biro.'], ['2016', 'Cursussen in Rubya', 'In februari geven twee docenten uit Kampala een cursus aan de staf. In september volgt een herhalingscursus. Essentiële pijnbestrijding is nog niet altijd mogelijk door een tekort aan morfinedrank.'], ['2017', 'Morfine in drinkvorm', 'Het project loopt goed: er is morfine in drinkvorm voorradig.'], ['2021', '159 nieuwe patiënten', 'Daarnaast 266 herhaalconsulten, vooral huisbezoeken. In totaal overleden 63 patiënten. David Kansheba behaalt zijn bachelor Palliative Care en wordt docent op het RHTI.'], ['2022', 'Twee opfriscursussen', 'In maart en juli worden opfriscursussen gegeven aan het team en de staf. Het team krijgt motorfietsen, door de bisschop gezegend.'], ['2023', 'Erkenning van de overheid', 'De District Medical Officer van Muleba wil dat het team andere gezondheidswerkers traint. Een poster over het team wordt geaccepteerd door het Europese Congres voor Palliatieve Zorg in Rotterdam.'], ['2024', 'Fietsen voor de dorpen', 'Afspraken met de overheid over voldoende morfine. € 1.400 opgehaald voor fietsen voor village health workers.', 'Actueel']],
   gallery: [['palliatieve-zorg-rubya-hospital-ziekenhuis-tanzania.jpg', 'Een patiënt in zijn dorp'], ['rubya-palliatieve-zorg-motorfietsen.jpg', 'Zegening van de motorfietsen'], ['rubya-palliatieve-zorg-opfriscursus.jpg', 'Opfriscursus palliatieve zorg'], ['Bespreking-Rapportage-Palliatieve-Zorg-scaled.jpg', 'Bespreking van de rapportage'], ['Bernadette-en-Lamiek-scaled.jpg', 'Bernadette en Lamiek bij de poster'], ['Support-supervision-palliatief-zorgproject.jpg', 'Supervisiebezoek']],
   band: band('€ 35 geeft één mens een waardig afscheid', 'Het palliatieve team bezoekt elk jaar 300 nieuwe patiënten. Elke gift van € 35 financiert de zorg voor één van hen.')
@@ -419,7 +419,7 @@ ${hero({ img: 'Bespreking-Rapportage-Palliatieve-Zorg-scaled.jpg', pos: 'center 
 </div></section>
 <section class="section bg-sand"><div class="container split top">
   <div data-reveal><span class="eyebrow">Nieuwsbrieven</span><h2 style="margin:.7rem 0 1.2rem">Blijf op de hoogte</h2><p class="lead">Vrienden van Rubya ontvangen jaarlijks een digitale nieuwsbrief met de voortgang van onze projecten.</p>
-  <form id="nbform" class="form" style="margin-top:1.6rem;max-width:460px"><div class="fld"><label for="e1">E-mailadres</label><input id="e1" name="email" type="email" required placeholder="naam@voorbeeld.nl"></div><button class="btn btn-primary" type="submit" style="justify-self:start">Aanmelden ${I.arrow}</button><p class="note">Opent uw e-mailprogramma met een bericht aan onze secretaris.</p></form></div>
+  <form id="nbform" class="form" style="margin-top:1.6rem;max-width:460px"><div class="fld"><label for="e1">E-mailadres</label><input id="e1" name="email" type="email" required placeholder="naam@voorbeeld.nl" autocomplete="email"></div>${consentBox('c1')}<button class="btn btn-primary" type="submit" style="justify-self:start">Aanmelden ${I.arrow}</button><p class="note">Opent uw e-mailprogramma met een bericht aan onze secretaris.</p></form></div>
   <div class="rows" data-reveal>
     ${row('Nieuwsbrief Rubya Hospital', 'april 2026', PDF + '2026-04-13-Rubya-Nieuwsbrief-April-2026_compressed.pdf')}
     ${row('Nieuwsbrief Rubya Hospital', 'december 2025', PDF + '2025-12-21-Nieuwsbrief_compressed.pdf')}
@@ -502,7 +502,7 @@ ${hero({ img: 'vrienden-van-rubya-contact.jpg', pos: 'center 35%', eyebrow: 'Don
   <div class="iban"><small>Rekeningnummer</small><code>${IBAN}</code><small>t.n.v. Stichting Vrienden van Rubya</small><br><small>BIC ABNANL2A</small><div class="row" style="margin-top:1.2rem"><button class="btn btn-light btn-sm" data-copy="${IBAN}">Kopieer IBAN</button></div></div>
 </div></div></section>
 <section class="section bg-sand"><div class="container split"><div data-reveal><span class="eyebrow">Nieuwsbrief</span><h2 style="margin:.7rem 0 1.2rem">Laat het ons weten</h2><p class="lead">Bent u Vriend van Rubya geworden? Laat uw e-mailadres achter. Wij houden u jaarlijks op de hoogte met een digitale nieuwsbrief.</p></div>
-<form id="nbform" class="form" data-reveal><div class="fld"><label for="e2">E-mailadres</label><input id="e2" name="email" type="email" required placeholder="naam@voorbeeld.nl"></div><button class="btn btn-primary" type="submit" style="justify-self:start">Aanmelden ${I.arrow}</button><p class="note">Opent uw e-mailprogramma met een bericht aan onze secretaris.</p></form></div></section>`
+<form id="nbform" class="form" data-reveal><div class="fld"><label for="e2">E-mailadres</label><input id="e2" name="email" type="email" required placeholder="naam@voorbeeld.nl" autocomplete="email"></div>${consentBox('c2')}<button class="btn btn-primary" type="submit" style="justify-self:start">Aanmelden ${I.arrow}</button><p class="note">Opent uw e-mailprogramma met een bericht aan onze secretaris.</p></form></div></section>`
 });
 
 /* =========================================================== CONTACT */
@@ -516,14 +516,16 @@ ${hero({ img: 'Front-Rubya-Hospital.jpg', pos: 'center 55%', eyebrow: 'Contact',
   <form class="form" id="contactform" data-reveal>
     <div class="fld"><label for="n">Naam</label><input id="n" name="naam" required autocomplete="name"></div>
     <div class="fld"><label for="m">E-mail</label><input id="m" name="email" type="email" required autocomplete="email"></div>
-    <div class="fld"><label for="v">Hoe bent u in contact gekomen met de stichting?</label><select id="v" name="via"><option>Kies een optie</option><option>via een bekende</option><option>via een zoekmachine</option><option>via een andere stichting</option><option>via een bericht in de media</option><option>anders</option></select></div>
     <div class="fld"><label for="q">Uw vraag of opmerking</label><textarea id="q" name="msg" required></textarea></div>
-    <label class="chk"><input type="checkbox" name="nb"> Ik schrijf me in voor de nieuwsbrief</label>
+    <label class="chk"><input type="checkbox" name="nb"> <span>Ik wil ook de nieuwsbrief ontvangen (optioneel).</span></label>
+    ${consentBox('c3').replace('Ik ga akkoord met de <a href="privacy.html">privacyverklaring</a> en wil de nieuwsbrief ontvangen.','Ik ga akkoord met de <a href="privacy.html">privacyverklaring</a>.')}
     <button class="btn btn-primary" type="submit" style="justify-self:start">Verstuur bericht ${I.arrow}</button>
     <p class="note sent" hidden>Uw e-mailprogramma wordt geopend met uw bericht. Werkt dat niet? Mail ons dan op info@vriendenvanrubya.org.</p>
   </form>
 </div></section>`
 });
+
+legal({ add, pages, btn, IBAN });
 
 /* ---------- write ---------- */
 for (const p of pages) fs.writeFileSync(OUT + p.file, page(p));
