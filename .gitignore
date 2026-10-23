@@ -3,3 +3,4 @@ serve.log
 node_modules/
 dist/
 .wrangler/
+_osm/

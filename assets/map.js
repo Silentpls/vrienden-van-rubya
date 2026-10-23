@@ -21,8 +21,12 @@ let d=`M${L[0]}`;for(let i=0;i<L.length;i++){const p0=L[(i-1+L.length)%L.length]
   d+=`C${p1[0]+(p2[0]-p0[0])/6},${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6},${p2[1]-(p3[1]-p1[1])/6} ${p2[0]},${p2[1]}`}
 el('path',{d:d+'Z',class:'m-lake'},svg);
 
-/* labels: [lon,lat,text,class,px,visible(vh)->0..1] */
 const sm=(a,b,v)=>{const t=Math.min(1,Math.max(0,(v-a)/(b-a)));return t*t*(3-2*t)};
+/* roads (OSM, ODbL): main roads only, fade in as the camera zooms */
+const roads=window.ROADS?['t1'].map(t=>{const e=el('path',{d:ROADS[t],class:'m-road '+t},svg);return e}):[];
+const ROAD_VIS={t1:vh=>1-sm(1500,2600,vh)};
+
+/* labels: [lon,lat,text,class,px,visible(vh)->0..1] */
 const labels=[
  [15,18,'Afrika','m-lbl',30,vh=>sm(2600,4200,vh)],
  [34.6,-6.2,'Tanzania','m-lbl',17,vh=>sm(500,900,vh)*(1-sm(2500,4200,vh))],
@@ -32,7 +36,7 @@ const labels=[
  [32.9,-2.52,'Mwanza','m-city',13,vh=>sm(150,500,vh)*(1-sm(1800,2400,vh)),1],
  [32.58,.35,'Kampala','m-city',13,vh=>sm(150,500,vh)*(1-sm(1800,2400,vh)),1],
  [31.81,-1.33,'Bukoba','m-city',13,vh=>1-sm(450,900,vh),1]
-].map(([lo,la,t,c,px,vis,dot])=>{
+].concat((window.ROADS?ROADS.towns:[]).map(([lo,la,n,k])=>[lo,la,n,'m-city',k==='village'?10:12,k==='village'?(vh=>1-sm(380,520,vh)):k==='town'?(vh=>1-sm(650,1000,vh)):(vh=>1-sm(1500,2400,vh)),1])).map(([lo,la,t,c,px,vis,dot])=>{
   const e=el('text',{class:c},svg);e.textContent=t;
   const o={e,lo,la,px,vis,dot:dot?el('circle',{class:'m-dot'},svg):null};return o});
 const pin=el('g',{},svg);
@@ -43,7 +47,7 @@ const ptxt=el('text',{class:'m-city',style:'font-weight:800;fill:#5a3a28'},pin);
 
 /* camera */
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, seg=(p,a,b)=>Math.min(1,Math.max(0,(p-a)/(b-a))), lerp=(a,b,t)=>a+(b-a)*t;
-const K=[ {x:X(17),y:Y(2),vh:7700,mw:7500}, {x:X(34.9),y:Y(-6.3),vh:1250,mw:1250}, {x:X(RUBYA[0]),y:Y(RUBYA[1])+8,vh:300,mw:430} ];
+const K=[ {x:X(17),y:Y(2),vh:7700,mw:7500}, {x:X(34.9),y:Y(-6.3),vh:1250,mw:1250}, {x:X(RUBYA[0]),y:Y(RUBYA[1])+8,vh:150,mw:210} ];
 let W=1,H=1;
 const size=()=>{W=stage.clientWidth;H=stage.clientHeight};
 function render(p){
@@ -58,10 +62,11 @@ function render(p){
   labels.forEach(l=>{const o=l.vis(c.vh);l.e.setAttribute('x',X(l.lo));l.e.setAttribute('y',Y(l.la)+(l.dot?-l.px*.7*k:0));l.e.style.fontSize=l.px*k+'px';l.e.style.opacity=o;
     if(l.dot){l.e.setAttribute('x',X(l.lo)+l.px*.6*k);l.e.style.textAnchor='start';l.dot.setAttribute('cx',X(l.lo));l.dot.setAttribute('cy',Y(l.la));l.dot.setAttribute('r',3.5*k);l.dot.style.opacity=o}
     else l.e.style.letterSpacing=(l.px>20?.4:.14)+'em'});
+  roads.forEach(e=>{const o=ROAD_VIS[e.classList[1]](c.vh);e.style.opacity=o;e.style.display=o<.01?'none':''});
   const rx=X(RUBYA[0]),ry=Y(RUBYA[1]);
   pin.setAttribute('transform',`translate(${rx} ${ry})`);
   glow.setAttribute('r',90*k);rings.forEach(r=>r.setAttribute('r',10*k));dot.setAttribute('r',Math.max(5,7*(1-.35*seg(p,0,.6)))*k);
-  ptxt.setAttribute('x',16*k);ptxt.setAttribute('y',5*k);ptxt.style.fontSize=14*k+'px';ptxt.style.opacity=sm(.55,.8,p);
+  ptxt.setAttribute('x',16*k);ptxt.setAttribute('y',-13*k);ptxt.style.fontSize=14*k+'px';ptxt.style.opacity=sm(.55,.8,p);
   const st=p<.3?0:p<.82?1:2;
   steps.forEach((e,i)=>e.classList.toggle('on',i===st));dots.forEach((e,i)=>e.classList.toggle('on',i<=st));
 }

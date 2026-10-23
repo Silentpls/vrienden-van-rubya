@@ -63,7 +63,7 @@ const footer = () => `
 <footer class="ftr"><div class="container">
   <div class="ftr-grid">
     <div><a class="logo" href="index.html"><span class="logo-chip">${LOGO}</span><span><b>Vrienden van Rubya</b><small>Stichting · sinds 1997</small></span></a>
-      <p style="max-width:34ch;font-size:.95rem">Wij zijn vrijwilligers. Uw gift komt voor 100% ten goede aan Rubya Hospital in Tanzania.</p>
+      <p style="max-width:34ch;font-size:.95rem">Wij zijn vrijwilligers. Uw gift komt voor 100% ten goede aan Rubya Hospital in Tanzania. <a class="verify" href="rapporten.html">Zelf controleren? Zie de rapporten en verslagen</a></p>
       <img class="official" src="images/logo-officieel.jpg" alt="Officieel logo: Stichting Vrienden van Rubya, Help het Rubya Ziekenhuis in Tanzania" loading="lazy"><img class="anbi" src="images/ANBI_logo1.jpg" alt="ANBI, Algemeen Nut Beogende Instelling" loading="lazy"></div>
     <div><h4>Stichting</h4><a href="stichting.html">Over de stichting</a><a href="stichting.html#doelstelling">Doelstelling</a><a href="stichting.html#bestuur">Bestuur</a><a href="rapporten.html">Rapporten &amp; verslagen</a><a href="anbi.html">ANBI</a><a href="nieuws.html">Nieuws</a></div>
     <div><h4>Projecten</h4><a href="ziekenhuis.html">Het ziekenhuis</a><a href="opleiding.html">Opleiding &amp; sponsoring</a><a href="palliatieve-zorg.html">Palliatieve zorg</a><a href="drinkwater.html">Drinkwater</a><a href="onderhoud.html">Onderhoudsplan</a><a href="ict.html">ICT-project</a></div>
@@ -82,11 +82,24 @@ const page = ({ file, title, desc, cur, body, extraJs = '' }) => `<!doctype html
 <dialog class="lb"><button aria-label="Sluiten">✕</button><img alt=""><p></p></dialog>
 <script src="assets/site.js"></script>${extraJs}</body></html>`;
 
-const hero = ({ img, pos = 'center', eyebrow, h1, lead, ctas = '', crumbs = '', stats = '', big = false }) => `
-<section class="hero${big ? '' : ' page'}"><div class="hero-img"><img src="images/${img}" alt="" style="--pos:${pos}" fetchpriority="high"></div>
+const hero = ({ img, pos = 'center', eyebrow, h1, lead, ctas = '', crumbs = '', stats = '', big = false, cls = '' }) => `
+<section class="hero${big ? '' : ' page'}${cls ? ' ' + cls : ''}"><div class="hero-img"><img src="images/${img}" alt="" style="--pos:${pos}" fetchpriority="high"></div>
 <div class="container hero-in">${crumbs ? `<div class="crumbs">${crumbs}</div>` : ''}<span class="eyebrow">${eyebrow}</span><h1 style="margin-top:.9rem">${h1}</h1><p class="lead">${lead}</p>${ctas ? `<div class="hero-cta">${ctas}</div>` : ''}${stats}</div>${big ? '<div class="scroll-cue" aria-hidden="true"></div>' : ''}</section>`;
 const crumb = (...p) => `<a href="index.html">Home</a> / ${p.join(' / ')}`;
 const btn = (h, t, c = 'btn-primary', i = I.arrow) => `<a class="btn ${c}" href="${h}">${t} ${i}</a>`;
+
+const trust = () => `
+<section class="section bg-dark trust" id="vertrouwen"><div class="container">
+  <div class="head" data-reveal><span class="eyebrow">Transparantie</span><h2>Waarom u ons kunt vertrouwen</h2><p class="lead">Geen grote woorden, maar feiten die u zelf kunt nalopen.</p></div>
+  <div class="trust-grid">${[
+    ['1997', 'Opgericht door mensen die er zelf werkten', 'Oud-tropenartsen die in Rubya werkten, richtten de stichting op.'],
+    ['100%', 'Alleen vrijwilligers', 'Wij zijn allemaal vrijwilliger. Uw gift komt 100% ten goede aan de projecten.'],
+    ['Eigen kosten', 'Werkbezoeken betaalt het bestuur zelf', 'Het bestuur betaalt de werkbezoeken aan Rubya zelf.'],
+    ['ANBI', 'ANBI sinds 2008', 'Onze jaarverslagen staan online.', 'rapporten.html', 'Naar de jaarverslagen']
+  ].map((c, i) => `<div class="tcard" data-reveal style="--i:${i}"><svg class="tick" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="m12 20.5 5.5 5.5L28 14.5"/></svg><small>${c[0]}</small><h3>${c[1]}</h3><p>${c[2]}</p>${c[3] ? `<a class="tlink" href="${c[3]}">${c[4]} ${I.arrow}</a>` : ''}</div>`).join('')}
+    <a class="tcard tproof" href="rapporten.html" data-reveal style="--i:4"><small>In 2025 ontvingen wij aan giften</small><b data-count="54342" data-pre="€ ">0</b><span class="tlink">Bekijk de verantwoording ${I.arrow}</span></a>
+  </div>
+</div></section>`;
 
 const band = (h = 'Word Vriend van Rubya', p = 'Wij zijn een stichting van vrijwilligers. Uw gift gaat dus voor 100% naar de projecten in Tanzania — en omdat wij ANBI zijn, is uw gift aftrekbaar van de belasting.') => `
 <section class="section" style="padding-top:0"><div class="container"><div class="band" data-reveal>
@@ -152,7 +165,7 @@ const add = (p) => pages.push(p);
 add({
   file: 'index.html', title: 'Goede zorg in Tanzania', cur: 'index.html',
   desc: 'Stichting Vrienden van Rubya ondersteunt Rubya Hospital in Noordwest-Tanzania. Uw gift komt voor 100% ten goede aan de lokale projecten.',
-  extraJs: '<script src="assets/mapdata.js"></script><script src="assets/map.js"></script>',
+  extraJs: '<script src="assets/mapdata.js"></script><script src="assets/roads.js"></script><script src="assets/map.js"></script>',
   body: `
 ${hero({
     big: true, img: 'Student-Revolving-Fund.jpg', pos: 'center 30%', eyebrow: 'Stichting Vrienden van Rubya · sinds 1997',
@@ -225,7 +238,7 @@ ${band()}`
 add({
   file: 'stichting.html', title: 'Over de stichting', cur: 'stichting.html', desc: 'Sinds 1997 coördineert Stichting Vrienden van Rubya materiële hulpverlening aan Rubya Hospital in Tanzania. Lees over onze doelstelling, aanpak en bestuur.',
   body: `
-${hero({ img: 'bestuur-stichting-vrienden-van-rubya-2025.jpg', pos: 'center 30%', eyebrow: 'Stichting', h1: 'Oud-tropenartsen die Rubya niet los kunnen laten.', lead: 'In 1996 kwamen artsen die in Rubya hadden gewerkt voor het eerst weer bij elkaar. Een jaar later was er een stichting.', crumbs: crumb('Stichting'), ctas: btn('#doelstelling', 'Onze doelstelling', 'btn-light') + btn('#bestuur', 'Het bestuur', 'btn-line') })}
+${hero({ img: 'bestuur-stichting-vrienden-van-rubya-2025.jpg', pos: 'center top', cls: 'group', eyebrow: 'Stichting', h1: 'Oud-tropenartsen die Rubya niet los kunnen laten.', lead: 'In 1996 kwamen artsen die in Rubya hadden gewerkt voor het eerst weer bij elkaar. Een jaar later was er een stichting.', crumbs: crumb('Stichting'), ctas: btn('#doelstelling', 'Onze doelstelling', 'btn-light') + btn('#bestuur', 'Het bestuur', 'btn-line') })}
 <section class="section"><div class="container split top">
   <div data-reveal><span class="eyebrow">Ons verhaal</span><h2 style="margin:.7rem 0 1.2rem">Van een reünie naar een stichting.</h2>
   <p class="lead">Tijdens die eerste bijeenkomst bleek dat er behoefte was aan een meer structurele bijdrage aan de gezondheidszorg in Rubya, en aan steun voor het ziekenhuis en de verpleegstersopleiding.</p>
@@ -263,7 +276,7 @@ ${hero({ img: 'bestuur-stichting-vrienden-van-rubya-2025.jpg', pos: 'center 30%'
 <section class="section bg-sand" id="bestuur"><div class="container split">
   <figure class="ph" data-reveal style="aspect-ratio:4/3.2"><img src="images/bestuur-stichting-vrienden-van-rubya-2025.jpg" alt="Het bestuur van Stichting Vrienden van Rubya in 2025" loading="lazy"><figcaption>Het bestuur, 2025</figcaption></figure>
   <div data-reveal><span class="eyebrow">Bestuur</span><h2 style="margin:.7rem 0 1.2rem">De mensen achter de stichting</h2><p class="lead">Sinds 10 januari 2025 heeft de stichting een nieuw bestuur. Bijna alle bestuursleden hebben vroeger zelf in Rubya Hospital gewerkt.</p>
-  <div class="board"><div><b>Sybo Dijkstra</b><span>voorzitter</span></div><div><b>Erik de Vries</b><span>secretaris</span></div><div><b>Rolf Westerhof</b><span>penningmeester</span></div><div><b>Lamiek Westerhof</b><span>lid</span></div><div><b>Frank Bigirwamungu</b><span>lid · geboren in Rubya</span></div></div></div>
+  <div class="board"><div><b>Sybo Dijkstra</b><span>voorzitter</span></div><div><b>Erik de Vries</b><span>secretaris</span></div><div><b>Rolf Westerhof</b><span>penningmeester</span></div><div><b>Lamiek Westerhof</b><span>bestuurslid</span></div><div><b>Frank Bigirwamungu</b><span>bestuurslid · geboren in Rubya</span></div></div></div>
 </div></section>
 ${band()}`
 });
@@ -413,7 +426,7 @@ ${hero({ img: 'Bespreking-Rapportage-Palliatieve-Zorg-scaled.jpg', pos: 'center 
 <section class="section"><div class="container">
   ${head('Nieuws', 'Uit het bestuur en uit Rubya')}
   <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
-    <article class="card" data-reveal style="padding:0;overflow:hidden"><img src="images/rubya-bestuur-frank-bigirwamungu-23.jpg" alt="Frank Bigirwamungu" loading="lazy" style="aspect-ratio:16/10;object-fit:cover;object-position:center 25%;width:100%"><div style="padding:30px"><span class="eyebrow">Bestuur</span><h3 style="margin:.6rem 0">Nieuw bestuurslid: Frank Bigirwamungu</h3><p>Het bestuur is uitgebreid met Frank, geboren in Rubya en al jaren woonachtig en werkzaam in Nederland. Hij is een goede link tussen de stichting en Rubya zelf en bezoekt het dorp drie of vier keer per jaar. In november sprak hij vooral met de leiding van de school. Van zijn hand is het schrijven over de school en de sponsoring.</p></div></article>
+    <article class="card" data-reveal style="padding:0;overflow:hidden"><div class="portrait-fit" style="--bg:url(images/rubya-bestuur-frank-bigirwamungu-23.jpg)"><img src="images/rubya-bestuur-frank-bigirwamungu-23.jpg" alt="Frank Bigirwamungu" loading="lazy"></div><div style="padding:30px"><span class="eyebrow">Bestuur</span><h3 style="margin:.6rem 0">Nieuw bestuurslid: Frank Bigirwamungu</h3><p>Het bestuur is uitgebreid met Frank, geboren in Rubya en al jaren woonachtig en werkzaam in Nederland. Hij is een goede link tussen de stichting en Rubya zelf en bezoekt het dorp drie of vier keer per jaar. In november sprak hij vooral met de leiding van de school. Van zijn hand is het schrijven over de school en de sponsoring.</p></div></article>
     <article class="card" data-reveal style="--i:1;padding:0;overflow:hidden"><img src="images/Male-Ward.jpg" alt="Mannenafdeling" loading="lazy" style="aspect-ratio:16/10;object-fit:cover;width:100%"><div style="padding:30px"><span class="eyebrow">Ziekenhuis · 2023</span><h3 style="margin:.6rem 0">Updates ziekenhuis 2023</h3><p>Lang was Rubya een zeer drukbezocht ziekenhuis met 162 bedden. Nu is de zorg elders verbeterd, maar de ziektegevallen die in Rubya komen zijn zwaarder. Het ziekenhuis heeft dringend specialisten nodig, een gynaecoloog, chirurg en internist, en een renovatie van de OK en betere ICU zijn gepland.</p></div></article>
   </div>
 </div></section>
@@ -469,7 +482,7 @@ ${hero({ img: 'bestuur-stichting-vrienden-van-rubya-2025.jpg', pos: 'center 30%'
     <div class="row-link" style="pointer-events:none"><span>Website<small>www.vriendenvanrubya.org</small></span></div>
   </div></div>
   <div data-reveal><span class="eyebrow">Bestuurssamenstelling</span><h2 style="margin:.7rem 0 1.2rem">Wie besturen de stichting?</h2>
-  <div class="board" style="margin-top:0"><div><b>S.A. (Sybo) Dijkstra</b><span>voorzitter</span></div><div><b>J.F. (Erik) de Vries</b><span>secretaris</span></div><div><b>R. (Rolf) Westerhof</b><span>penningmeester</span></div><div><b>L.H. (Lamiek) Westerhof</b><span>lid</span></div><div><b>F. (Frank) Bigirwamungu</b><span>lid</span></div></div>
+  <div class="board" style="margin-top:0"><div><b>S.A. (Sybo) Dijkstra</b><span>voorzitter</span></div><div><b>J.F. (Erik) de Vries</b><span>secretaris</span></div><div><b>R. (Rolf) Westerhof</b><span>penningmeester</span></div><div><b>L.H. (Lamiek) Westerhof</b><span>bestuurslid</span></div><div><b>F. (Frank) Bigirwamungu</b><span>bestuurslid</span></div></div>
   <p class="muted" style="margin-top:1.4rem">Bijna alle bestuursleden zijn ex-tropenartsen en hebben vroeger in Rubya Hospital gewerkt.</p><div class="hero-cta">${btn('rapporten.html', 'Rapporten en verslagen', 'btn-ghost')}</div></div>
 </div></section>${band()}`
 });
@@ -497,6 +510,7 @@ ${hero({ img: 'vrienden-van-rubya-contact.jpg', pos: 'center 35%', eyebrow: 'Don
   </div>
   <div class="hero-cta" style="margin-top:2rem">${btn('contact.html', 'Vraag ons deel van het formulier aan', 'btn-ghost')}</div>
 </div></section>
+${trust()}
 <section class="section"><div class="container"><div class="band" data-reveal>
   <div><span class="eyebrow">Overmaken</span><h2>Maak uw gift over</h2><p class="lead">Vermeld gerust uw naam en e-mailadres als omschrijving, dan houden wij u op de hoogte van de projecten.</p></div>
   <div class="iban"><small>Rekeningnummer</small><code>${IBAN}</code><small>t.n.v. Stichting Vrienden van Rubya</small><br><small>BIC ABNANL2A</small><div class="row" style="margin-top:1.2rem"><button class="btn btn-light btn-sm" data-copy="${IBAN}">Kopieer IBAN</button></div></div>
